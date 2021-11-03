@@ -30,7 +30,7 @@ router.post("/",async(req,res,next)=>{
 // get by id
 router.get("/:id",async(req,res,next)=>{
     try {
-        const reviewById = await Review.findByPk(req.params.id)
+        const reviewById = await Review.findByPk(req.params.id,{include:Product})
         res.send( reviewById)
     } catch (error) {
         console.log(error) 

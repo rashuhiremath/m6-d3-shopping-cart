@@ -30,7 +30,7 @@ router.post("/",async(req,res,next)=>{
 // get by id
 router.get("/:id",async(req,res,next)=>{
     try {
-        const productById = await Product.findByPk(req.params.id)
+        const productById = await Product.findByPk(req.params.id,{include:Review})
         res.send(productById)
     } catch (error) {
         console.log(error) 
@@ -64,6 +64,24 @@ router.delete("/:id",async(req,res,next)=>{
     } catch (error) {
        console.log(error) 
        next(error) 
+    }
+})
+
+//extra
+
+router.get("/", async(req,res,next)=>{
+    try {
+        const findByCategory = await Product.findAll({
+            where:{
+                category:req.params.category
+            },
+
+        })
+        res.send(findByCategory )
+        
+    } catch (error) {
+console.log(error)
+next(error)
     }
 })
 
