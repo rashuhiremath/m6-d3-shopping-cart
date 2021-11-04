@@ -15,10 +15,7 @@ const Review = sequelize.define("reviews",{
         allowNull: false
 
     },
-    username:{
-        type:DataTypes.STRING,
-        allowNull: false
-    }
+   
 })
 
 export default Review

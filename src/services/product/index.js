@@ -1,13 +1,16 @@
 import express from "express"
+import Categoryproduct from "../../db/models/categoryProduct.js"
 import models from "../../db/models/index.js"
-const {Product,Review}= models
+const {Product,Review,Category}= models
 
 const router = express.Router()
 
 router.get("/",async(req,res,next)=>{
     try {
 
-        const products = await Product.findAll({include:Review})
+        const products = await Product.findAll({include:[{model:Category,
+            through:{attributes:[]}},
+            Review]})
         res.send(products)
         
     } catch (error) {
@@ -19,11 +22,32 @@ router.get("/",async(req,res,next)=>{
 
 router.post("/",async(req,res,next)=>{
     try {
-        const product = await Product.create(req.body)
+
+        const {categories,...rest} = req.body
+        const product = await Product.create(rest)
+
+        await Categoryproduct.create({
+            categoryId:req.body.categoryId,
+            productId:product.id,
+        })
         res.send(product)
         
     } catch (error) {
         console.log(error) 
+        next(error)
+    }
+})
+
+router.post("/:id/categories", async(req,res,next)=>{
+    try {
+        const {categories}= req.body
+        const newValues = categories.map((category) => ({
+            categoryId: category,
+            productId: req.params.productId,
+          }));
+        res.send(newValues )
+    } catch (error) {
+        console.log(error)
         next(error)
     }
 })

@@ -3,7 +3,7 @@ import {Sequelize} from "sequelize"
 
 const {PGUSER,PGDATABASE,PGHOST,PGPORT,PGPASSWORD} = process.env
 
-const sequelize = new Sequelize(PGUSER,PGDATABASE,PGPASSWORD,{
+const sequelize = new Sequelize(PGDATABASE,PGUSER, PGPASSWORD,{
     host:PGHOST,
     port:PGPORT,
     dialect: "postgres",
