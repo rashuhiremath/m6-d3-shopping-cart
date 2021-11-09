@@ -3,6 +3,7 @@ import Review from "./reviews.js"
 import User from "./user.js"
 import Category from "./category.js"
 import Categoryproduct from "./categoryProduct.js";
+import Shoppingcart from "./shoppingcart.js"
 
 Product.hasMany(Review,{onDelete:"CASCADE"})
 Review.belongsTo(Product,{onDelete:"CASCADE"})
@@ -19,4 +20,4 @@ User.belongsTo(Review,{onDelete:"CASCADE"})
 
 
 
-export default {Product,Review,User,Category,Categoryproduct}
+export default {Product,Review,User,Category,Categoryproduct,Shoppingcart}

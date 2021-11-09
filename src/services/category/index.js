@@ -1,6 +1,6 @@
 import express from "express"
 import models from "../../db/models/index.js"
-const {Category}=models
+const {Category} = models
 
 const router = express.Router()
 

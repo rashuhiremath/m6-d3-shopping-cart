@@ -3,7 +3,20 @@ import Categoryproduct from "../../db/models/categoryProduct.js"
 import models from "../../db/models/index.js"
 const {Product,Review,Category}= models
 
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+import { v2 as cloudinary } from "cloudinary"
+import multer from "multer"
+
+
 const router = express.Router()
+
+
+const cloudinaryStorage = new CloudinaryStorage({
+  cloudinary, // CREDENTIALS, this line of code is going to search in your process.env for something called CLOUDINARY_URL
+  params: {
+    folder: "Amazon",
+  },
+})
 
 router.get("/",async(req,res,next)=>{
     try {
@@ -37,6 +50,22 @@ router.post("/",async(req,res,next)=>{
         next(error)
     }
 })
+router.post("/:id/uploadCloudinary", multer({ storage: cloudinaryStorage }).single("image"), async (req, res, next) => {
+    try {
+        const image = req.file.path
+      console.log(req.file)
+      const result = await Product.update({image},{
+        where:{
+            id:req.params.id
+      },returning:true
+        
+        })
+      res.send({result})
+    } catch (error) {
+      next(error)
+    }
+  })
+
 
 router.post("/:id/categories", async(req,res,next)=>{
     try {
@@ -108,5 +137,9 @@ console.log(error)
 next(error)
     }
 })
+
+/// image post
+
+
 
 export default router
